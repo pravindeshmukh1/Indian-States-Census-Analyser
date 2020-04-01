@@ -1,5 +1,6 @@
 package com.censusanalyser;
 
+import com.exception.CensusAnalyserException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -21,7 +22,7 @@ public class CensusAnalyser {
 
     int noOfCounts = 0;
 
-    public int loadCsvData() throws IOException {
+    public int loadCsvData() throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE_PATH));) {
             CsvToBean<StateCensusCsv> csvStateCensuses = new CsvToBeanBuilder(reader)
                     .withType(StateCensusCsv.class)
@@ -30,7 +31,7 @@ public class CensusAnalyser {
 
             Iterator<StateCensusCsv> stateCensusCsvIterator = csvStateCensuses.iterator();
             while (stateCensusCsvIterator.hasNext()) {
-                StateCensusCsv stateCensusCsv =stateCensusCsvIterator.next();
+                StateCensusCsv stateCensusCsv = stateCensusCsvIterator.next();
                 System.out.println("State :" + stateCensusCsv.getState());
                 System.out.println("Population: " + stateCensusCsv.getPopulation());
                 System.out.println("AreaInSqKm: " + stateCensusCsv.getAreaInSqKm());
@@ -38,6 +39,8 @@ public class CensusAnalyser {
                 System.out.println("=====================================================");
                 noOfCounts++;
             }
+        } catch (IOException e) {
+            throw new CensusAnalyserException(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND);
         }
         return noOfCounts;
     }

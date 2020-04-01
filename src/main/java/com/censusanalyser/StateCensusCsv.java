@@ -12,9 +12,6 @@ public class StateCensusCsv {
     @CsvBindByName(column = "DensityPerSqKm")
     private String densityPerSqKm;
 
-    public StateCensusCsv() {
-    }
-
     public String getState() {
         return state;
     }
