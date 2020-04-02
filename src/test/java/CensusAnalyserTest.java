@@ -5,6 +5,8 @@ import org.junit.Test;
 
 public class CensusAnalyserTest {
     private static final String CSV_FILE_PATH = "./src/test/resources/StateCensusData.csv";
+    private static final String CSV_FILE_INCORRECT_PATH = "./src/test/resources/StateCensusData.txt";
+
 
     @Test
     public void givenStateCensusCSVFile_whenNumberOfRecordMatchesTrue_shouldReturnNumberOfRecordMatches() throws CensusAnalyserException {
@@ -20,6 +22,16 @@ public class CensusAnalyserTest {
             censusAnalyser.loadCsvData();
         } catch (CensusAnalyserException e) {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, e.exceptionType);
+        }
+    }
+
+    @Test
+    public void givenStateCensusCSVFile_whenFileTypeTnCorrect_shouldReturnCustomException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser(CSV_FILE_INCORRECT_PATH);
+            censusAnalyser.loadCsvData();
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND,e.exceptionType);
         }
     }
 }
